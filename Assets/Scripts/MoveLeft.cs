@@ -13,7 +13,7 @@ public class MoveLeft : MonoBehaviour
 
     void Update()
     {
-        float currentSpeed = playerController.isSprinting ? speed * 2 : speed;
+        float currentSpeed = speed;
 
         if (!playerController.gameOver)
         {

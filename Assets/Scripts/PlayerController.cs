@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
@@ -12,18 +14,23 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private InputAction jumpAction;
-    private InputAction sprintAction; // Shift
     private bool isOnGround = true;
-    private bool canDoubleJump = false; // ตัวแปร double Jump
+    private bool canDoubleJump = false;
 
     private Animator playerAnim;
     private AudioSource playerAudio;
 
     public bool gameOver = false;
-    public bool isSprinting = false; // ตัวแปร Sprint
+    
 
-    public int maxHP = 3; //ตัวแปร HP
-    private int currentHP;
+    public int maxHP = 3;
+    public int currentHP;
+    public Slider hpSlider;
+
+    //score
+    public float moveSpeed = 10f;
+    private float runTime = 0f;
+    public int score = 0;
 
     void Awake()
     {
@@ -38,10 +45,13 @@ public class PlayerController : MonoBehaviour
         Physics.gravity *= gravityModifier;
 
         jumpAction = InputSystem.actions.FindAction("Jump");
-        sprintAction = InputSystem.actions.FindAction("Sprint");
 
         gameOver = false;
         currentHP = maxHP;
+
+        hpSlider.maxValue = maxHP;
+        hpSlider.value = currentHP;
+
     }
 
     // Update is called once per frame
@@ -53,7 +63,7 @@ public class PlayerController : MonoBehaviour
             {
                 Jump();
                 isOnGround = false;
-                canDoubleJump = true; // double jump
+                canDoubleJump = true;
             }
             else if (canDoubleJump)
             {
@@ -62,7 +72,13 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        isSprinting = sprintAction.IsPressed(); // Shift
+        if (!gameOver)
+        {
+            runTime += Time.deltaTime;
+            float distance = runTime * moveSpeed;
+            score = Mathf.FloorToInt(distance);
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -70,12 +86,13 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            canDoubleJump = false; // reset double jump
+            canDoubleJump = false;
             dirtParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
             currentHP--;
+            hpSlider.value = currentHP;
 
             explosionParticle.Play();
 
@@ -86,6 +103,7 @@ public class PlayerController : MonoBehaviour
             {
                 Debug.Log("Game Over!");
                 gameOver = true;
+                SaveScore(score);
                 playerAnim.SetBool("Death_b", true);
                 playerAnim.SetInteger("DeathType_int", 1);
                 dirtParticle.Stop();
@@ -99,6 +117,7 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("HealItem"))
         {
             currentHP++;
+            hpSlider.value = currentHP;
             explosionParticle.Play();
             Destroy(collision.gameObject);
         }
@@ -106,10 +125,32 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z); // reset
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         playerAnim.SetTrigger("Jump_trig");
         dirtParticle.Stop();
         playerAudio.PlayOneShot(jumpSfx);
     }
+
+    void SaveScore(int newScore)
+    {
+        List<int> history = new List<int>();
+
+        for (int i = 0; i < 5; i++)
+        {
+            history.Add(PlayerPrefs.GetInt("score" + i, 0));
+        }
+
+        history.Insert(0, newScore);
+
+        if (history.Count > 5) history.RemoveAt(5);
+
+        for (int i = 0; i < history.Count; i++)
+        {
+            PlayerPrefs.SetInt("score" + i, history[i]);
+        }
+
+        PlayerPrefs.Save();
+    }
+
 }
