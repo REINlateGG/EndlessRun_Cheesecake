@@ -92,22 +92,20 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
             currentHP--;
-            hpSlider.value = currentHP;
-
             explosionParticle.Play();
-
+            hpSlider.value = currentHP;
             Destroy(collision.gameObject);
 
             // HP
             if (currentHP <= 0)
             {
-                Debug.Log("Game Over!");
                 gameOver = true;
                 SaveScore(score);
                 playerAnim.SetBool("Death_b", true);
                 playerAnim.SetInteger("DeathType_int", 1);
                 dirtParticle.Stop();
                 playerAudio.PlayOneShot(crashSfx);
+                GameObject.Find("GameUIManager").GetComponent<GameUIManager>().ShowGameOver();
             }
             else
             {
@@ -116,8 +114,12 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("HealItem"))
         {
-            currentHP++;
-            hpSlider.value = currentHP;
+            if (currentHP < maxHP)
+            {
+                currentHP++;
+                hpSlider.value = currentHP;
+            }
+
             explosionParticle.Play();
             Destroy(collision.gameObject);
         }
