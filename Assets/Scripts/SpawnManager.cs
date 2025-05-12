@@ -21,11 +21,11 @@ public class SpawnManager : MonoBehaviour
 
         float rand = Random.value;
 
-        if (rand < 0.2f) //20% Heal
+        if (rand < 0.2f) //20% item heal
         {
             Instantiate(healItemPrefab, spawnPos, Quaternion.identity);
         }
-        else //80% Obstacle
+        else //80% obstacle
         {
             GameObject obj = ObstacleObjectPool.GetInstance().Acquire();
             obj.transform.position = spawnPos;

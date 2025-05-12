@@ -41,7 +41,7 @@ public class MenuUI : MonoBehaviour
         for (int i = 0; i < scoreTexts.Length; i++)
         {
             int score = PlayerPrefs.GetInt("score" + i, 0);
-            scoreTexts[i].text = $"Round: {i + 1}: {score}";
+            scoreTexts[i].text = $"Latest {i + 1}: {score}";
         }
     }
 

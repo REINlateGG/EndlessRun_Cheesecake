@@ -39,7 +39,6 @@ public class PlayerController : MonoBehaviour
         playerAudio = GetComponent<AudioSource>();
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Physics.gravity *= gravityModifier;
@@ -54,7 +53,6 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (jumpAction.triggered && !gameOver)
@@ -92,22 +90,20 @@ public class PlayerController : MonoBehaviour
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
             currentHP--;
-            hpSlider.value = currentHP;
-
             explosionParticle.Play();
-
+            hpSlider.value = currentHP;
             Destroy(collision.gameObject);
 
             // HP
             if (currentHP <= 0)
             {
-                Debug.Log("Game Over!");
                 gameOver = true;
                 SaveScore(score);
                 playerAnim.SetBool("Death_b", true);
                 playerAnim.SetInteger("DeathType_int", 1);
                 dirtParticle.Stop();
                 playerAudio.PlayOneShot(crashSfx);
+                GameObject.Find("GameUIManager").GetComponent<GameUIManager>().ShowGameOver();
             }
             else
             {
@@ -116,8 +112,12 @@ public class PlayerController : MonoBehaviour
         }
         else if (collision.gameObject.CompareTag("HealItem"))
         {
-            currentHP++;
-            hpSlider.value = currentHP;
+            if (currentHP < maxHP)
+            {
+                currentHP++;
+                hpSlider.value = currentHP;
+            }
+
             explosionParticle.Play();
             Destroy(collision.gameObject);
         }
@@ -142,15 +142,14 @@ public class PlayerController : MonoBehaviour
         }
 
         history.Insert(0, newScore);
-
         if (history.Count > 5) history.RemoveAt(5);
-
         for (int i = 0; i < history.Count; i++)
         {
             PlayerPrefs.SetInt("score" + i, history[i]);
         }
-
+        
         PlayerPrefs.Save();
+
     }
 
 }
