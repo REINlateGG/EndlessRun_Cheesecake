@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "EndlessRun.sln"
+    "dotnet.defaultSolution": "EndlessRun_Cheesecake.sln"
 }

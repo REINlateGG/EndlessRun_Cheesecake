@@ -7,8 +7,6 @@ public class SpawnManager : MonoBehaviour
     public float repeatRate = 2f;
 
     public GameObject healItemPrefab;         // ไอเทมเพิ่ม HP
-    public GameObject invincibleItemPrefab;   // ไอเทมอมตะ
-
     private PlayerController playerController;
 
     void Start()
@@ -23,19 +21,15 @@ public class SpawnManager : MonoBehaviour
 
         float rand = Random.value;
 
-        if (rand < 0.8f) // 80% Spawn Obstacle จาก Object Pool
+        if (rand < 0.2f) // 20% Spawn Heal Item
+        {
+            Instantiate(healItemPrefab, spawnPos, Quaternion.identity);
+        }
+        else // 80% Spawn Obstacle
         {
             GameObject obj = ObstacleObjectPool.GetInstance().Acquire();
             obj.transform.position = spawnPos;
             obj.transform.rotation = Quaternion.identity;
-        }
-        else if (rand < 0.9f) // 10% Spawn Heal Item
-        {
-            Instantiate(healItemPrefab, spawnPos, Quaternion.identity);
-        }
-        else // 10% Spawn Invincible Item
-        {
-            Instantiate(invincibleItemPrefab, spawnPos, Quaternion.identity);
         }
     }
 }
