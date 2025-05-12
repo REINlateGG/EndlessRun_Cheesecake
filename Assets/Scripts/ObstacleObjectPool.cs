@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ObstacleObjectPool : MonoBehaviour
 {
-    [Header("ใส่ Prefab Obstacle หลายแบบไว้ที่นี่")]
     public List<GameObject> obstaclePrefabs;
     public int initialSize = 10;
 
@@ -38,7 +37,7 @@ public class ObstacleObjectPool : MonoBehaviour
         GameObject prefab = GetRandomObstaclePrefab();
         GameObject obj = Instantiate(prefab);
         obj.SetActive(false);
-        obj.tag = "Obstacle"; // ตั้ง tag เดียว
+        obj.tag = "Obstacle";
         pool.Add(obj);
     }
 

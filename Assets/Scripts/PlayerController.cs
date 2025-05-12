@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private InputAction jumpAction;
     private bool isOnGround = true;
-    private bool canDoubleJump = false; // ตัวแปร double Jump
+    private bool canDoubleJump = false;
 
     private Animator playerAnim;
     private AudioSource playerAudio;
@@ -23,12 +23,12 @@ public class PlayerController : MonoBehaviour
     public bool gameOver = false;
     
 
-    public int maxHP = 3; //ตัวแปร HP
+    public int maxHP = 3;
     public int currentHP;
     public Slider hpSlider;
 
     //score
-    public float moveSpeed = 10f; // ต้องใส่ speed เดียวกับใน MoveLeft
+    public float moveSpeed = 10f;
     private float runTime = 0f;
     public int score = 0;
 
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
             {
                 Jump();
                 isOnGround = false;
-                canDoubleJump = true; // double jump
+                canDoubleJump = true;
             }
             else if (canDoubleJump)
             {
@@ -86,7 +86,7 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isOnGround = true;
-            canDoubleJump = false; // reset double jump
+            canDoubleJump = false;
             dirtParticle.Play();
         }
         else if (collision.gameObject.CompareTag("Obstacle"))
@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z); // reset
+        rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
         playerAnim.SetTrigger("Jump_trig");
         dirtParticle.Stop();
