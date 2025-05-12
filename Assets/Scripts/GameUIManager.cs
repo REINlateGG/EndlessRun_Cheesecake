@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameUIManager : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
-
     public PlayerController player;
 
     public GameObject gameOverPanel;
@@ -16,10 +15,8 @@ public class GameUIManager : MonoBehaviour
 
 void Start()
     {
-        // โหลดค่าที่บันทึกไว้จาก PlayerPrefs
         bool musicOn = PlayerPrefs.GetInt("music", 1) == 1;
-
-        // ตั้งสถานะ Toggle และ BGM
+        
         if (musicToggle != null)
         {
             musicToggle.isOn = musicOn;
@@ -52,7 +49,7 @@ void Start()
 
     public void OnMainMenu()
     {
-        SceneManager.LoadScene("StartScenes"); // เปลี่ยนชื่อให้ตรงกับซีนของเธอ
+        SceneManager.LoadScene("StartScenes");
     }
 
      public void OnExit()

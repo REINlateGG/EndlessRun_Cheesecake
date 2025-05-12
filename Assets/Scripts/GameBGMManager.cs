@@ -8,10 +8,8 @@ public class GameBGMManager : MonoBehaviour
 
     void Start()
     {
-        // โหลดค่าที่บันทึกไว้จาก PlayerPrefs
         bool musicOn = PlayerPrefs.GetInt("music", 1) == 1;
 
-        // ตั้งสถานะ Toggle และ BGM
         if (musicToggle != null)
         {
             musicToggle.isOn = musicOn;

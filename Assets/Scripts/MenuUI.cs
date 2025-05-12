@@ -17,13 +17,13 @@ public class MenuUI : MonoBehaviour
     {
         bool musicOn = PlayerPrefs.GetInt("music", 1) == 1;
 
-        musicToggle.isOn = musicOn;     // ตั้ง toggle ให้ตรง
-        bgm.mute = !musicOn;            // ตั้ง mute ให้ตรง
+        musicToggle.isOn = musicOn;
+        bgm.mute = !musicOn;
     }
 
     public void OnPlay()
     {
-        SceneManager.LoadScene("PlayScenes"); // ตั้งชื่อให้ตรงกับฉากหลักของเกม
+        SceneManager.LoadScene("PlayScenes");
     }
 
     public void OnOption()

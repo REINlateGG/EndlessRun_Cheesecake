@@ -6,7 +6,7 @@ public class SpawnManager : MonoBehaviour
     public float startDelay = 2f;
     public float repeatRate = 2f;
 
-    public GameObject healItemPrefab;         // ไอเทมเพิ่ม HP
+    public GameObject healItemPrefab;
     private PlayerController playerController;
 
     void Start()
@@ -21,11 +21,11 @@ public class SpawnManager : MonoBehaviour
 
         float rand = Random.value;
 
-        if (rand < 0.2f) // 20% Spawn Heal Item
+        if (rand < 0.2f) //20% item heal
         {
             Instantiate(healItemPrefab, spawnPos, Quaternion.identity);
         }
-        else // 80% Spawn Obstacle
+        else //80% obstacle
         {
             GameObject obj = ObstacleObjectPool.GetInstance().Acquire();
             obj.transform.position = spawnPos;
