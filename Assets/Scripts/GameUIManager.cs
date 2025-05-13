@@ -16,7 +16,7 @@ public class GameUIManager : MonoBehaviour
 void Start()
     {
         bool musicOn = PlayerPrefs.GetInt("music", 1) == 1;
-
+        
         if (musicToggle != null)
         {
             musicToggle.isOn = musicOn;
