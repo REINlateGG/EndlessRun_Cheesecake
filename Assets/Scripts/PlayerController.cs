@@ -11,6 +11,7 @@ public class PlayerController : MonoBehaviour
     public ParticleSystem dirtParticle;
     public AudioClip jumpSfx;
     public AudioClip crashSfx;
+    public AudioClip HealSfx;
 
     private Rigidbody rb;
     private InputAction jumpAction;
@@ -41,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        Physics.gravity *= gravityModifier;
+        Physics.gravity = new Vector3(0, -9.81f * gravityModifier, 0);
 
         jumpAction = InputSystem.actions.FindAction("Jump");
 
@@ -116,6 +117,11 @@ public class PlayerController : MonoBehaviour
             {
                 currentHP++;
                 hpSlider.value = currentHP;
+                playerAudio.PlayOneShot(HealSfx);
+            }
+            else
+            {
+                playerAudio.PlayOneShot(crashSfx);
             }
 
             explosionParticle.Play();
